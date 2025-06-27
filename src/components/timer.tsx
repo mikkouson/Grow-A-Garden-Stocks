@@ -11,9 +11,9 @@ const Timer = ({ refetch }: Props) => {
   useEffect(() => {
     const updateTimer = () => {
       const now = new Date();
-      const totalSeconds = now.getSeconds() + now.getMinutes() * 60;
+      const totalSeconds = now.getMinutes() * 60 + now.getSeconds();
+      const secondsToNextMark = 300 - (totalSeconds % 300);
 
-      const secondsToNextMark = 300 - (totalSeconds % 300); // 300 = 5 * 60
       const minutesLeft = Math.floor(secondsToNextMark / 60);
       const secondsLeft = secondsToNextMark % 60;
 
@@ -24,10 +24,11 @@ const Timer = ({ refetch }: Props) => {
 
       setTimeLeft(newTime);
 
+      // Trigger at 4:59 (i.e. 1 second after refresh starts)
       if (
-        newTime.minutes === 0 &&
-        newTime.seconds === 0 &&
-        !(prevTime.current.minutes === 0 && prevTime.current.seconds === 0)
+        newTime.minutes === 4 &&
+        newTime.seconds === 59 &&
+        !(prevTime.current.minutes === 4 && prevTime.current.seconds === 59)
       ) {
         refetch();
       }
