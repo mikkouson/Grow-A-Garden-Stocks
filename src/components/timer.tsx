@@ -1,15 +1,10 @@
-import { useEffect, useState, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { Clock } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-const Timer = () => {
-  const { isPending, error, data, refetch } = useQuery({
-    queryKey: ["stocks"],
-    queryFn: () =>
-      fetch("https://api.joshlei.com/v2/growagarden/stock").then((res) =>
-        res.json()
-      ),
-  });
-
+interface Props {
+  refetch: () => void;
+}
+const Timer = ({ refetch }: Props) => {
   const [timeLeft, setTimeLeft] = useState({ minutes: 0, seconds: 0 });
   const prevTime = useRef({ minutes: 0, seconds: 0 });
 
@@ -58,19 +53,26 @@ const Timer = () => {
     return () => clearInterval(interval);
   }, [refetch]);
 
-  const formatTime = (minutes: number, seconds: number) => {
-    const m = minutes.toString();
-    const s = seconds.toString().padStart(2, "0");
-    return `${m}m ${s}s`;
-  };
-
-  if (isPending) return "Loading...";
-  if (error) return "An error occurred: " + error.message;
-
   return (
     <div>
-      {formatTime(timeLeft.minutes, timeLeft.seconds)}
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <div className="text-center mb-4 sm:mb-6 mt-6">
+        <p className="text-gray-400 mb-3 text-xs sm:text-sm">
+          Live Inventory • Auto-refresh
+        </p>
+
+        <div className="mb-3 ">
+          <div className="flex items-center justify-center space-x-2 text-gray-400">
+            <Clock className="w-4 h-4" />
+            <span className="text-sm">Next update in:</span>
+            <span className="text-2xl font-bold text-green-400 font-mono">
+              {timeLeft.minutes}m {timeLeft.seconds.toString().padStart(2, "0")}
+              s
+            </span>
+          </div>
+        </div>
+
+        {/* Discord Link */}
+      </div>
     </div>
   );
 };
