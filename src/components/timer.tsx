@@ -11,38 +11,25 @@ const Timer = ({ refetch }: Props) => {
   useEffect(() => {
     const updateTimer = () => {
       const now = new Date();
-      const currentMinutes = now.getMinutes();
-      const currentSeconds = now.getSeconds();
-      const nextMark = Math.ceil(currentMinutes / 5) * 5;
+      const totalSeconds = now.getSeconds() + now.getMinutes() * 60;
 
-      let minutesLeft = nextMark - currentMinutes - 1;
-      let secondsLeft = 60 - currentSeconds;
-
-      if (nextMark >= 60) {
-        minutesLeft = 59 - currentMinutes;
-      }
-
-      if (secondsLeft === 60) {
-        secondsLeft = 0;
-        minutesLeft += 1;
-      }
-
-      if (minutesLeft < 0) minutesLeft = 4;
+      const secondsToNextMark = 300 - (totalSeconds % 300); // 300 = 5 * 60
+      const minutesLeft = Math.floor(secondsToNextMark / 60);
+      const secondsLeft = secondsToNextMark % 60;
 
       const newTime = {
-        minutes: Math.max(0, minutesLeft),
-        seconds: Math.max(0, secondsLeft),
+        minutes: minutesLeft,
+        seconds: secondsLeft,
       };
 
       setTimeLeft(newTime);
 
-      // Check if just reset to 0
       if (
         newTime.minutes === 0 &&
         newTime.seconds === 0 &&
         !(prevTime.current.minutes === 0 && prevTime.current.seconds === 0)
       ) {
-        refetch(); // trigger manual refetch
+        refetch();
       }
 
       prevTime.current = newTime;
