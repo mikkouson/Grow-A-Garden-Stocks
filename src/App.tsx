@@ -4,6 +4,7 @@ import Timer from "./components/timer";
 import "./index.css";
 import type { ApiResponse } from "./types/api";
 import StockCard from "./components/stock-card";
+import LoadingSpinner from "./components/loader";
 function App() {
   const { isPending, error, data, refetch } = useQuery<ApiResponse>({
     queryKey: ["stocks"],
@@ -12,7 +13,7 @@ function App() {
         res.json()
       ),
   });
-  if (isPending) return "Loading...";
+  if (isPending) return <LoadingSpinner />;
   if (error) return "An error occurred: " + error.message;
   return (
     <div className="w-full">
