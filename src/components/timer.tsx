@@ -25,9 +25,9 @@ const Timer = ({ refetch }: Props) => {
       setTimeLeft(newTime);
 
       if (
-        newTime.minutes === 5 &&
-        newTime.seconds === 0 &&
-        !(prevTime.current.minutes === 5 && prevTime.current.seconds === 0)
+        newTime.minutes === 4 &&
+        newTime.seconds === 59 &&
+        !(prevTime.current.minutes === 4 && prevTime.current.seconds === 59)
       ) {
         refetch();
       }
@@ -56,7 +56,7 @@ const Timer = ({ refetch }: Props) => {
               s
             </span>
           </div>
-          {timeLeft.minutes === 0 && timeLeft.seconds === 1 && (
+          {timeLeft.minutes === 5 && timeLeft.seconds === 0 && (
             <div className="flex justify-center items-center">
               <div className="flex text-center justify-center items-center gap-2">
                 <LoaderCircle className="h-4 w-4 animate-spin" />
