@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Clock, LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface Props {
@@ -24,11 +24,10 @@ const Timer = ({ refetch }: Props) => {
 
       setTimeLeft(newTime);
 
-      // Trigger at 4:59 (i.e. 1 second after refresh starts)
       if (
-        newTime.minutes === 4 &&
-        newTime.seconds === 59 &&
-        !(prevTime.current.minutes === 4 && prevTime.current.seconds === 59)
+        newTime.minutes === 5 &&
+        newTime.seconds === 0 &&
+        !(prevTime.current.minutes === 5 && prevTime.current.seconds === 0)
       ) {
         refetch();
       }
@@ -57,6 +56,16 @@ const Timer = ({ refetch }: Props) => {
               s
             </span>
           </div>
+          {timeLeft.minutes === 0 && timeLeft.seconds === 1 && (
+            <div className="flex justify-center items-center">
+              <div className="flex text-center justify-center items-center gap-2">
+                <LoaderCircle className="h-4 w-4 animate-spin" />
+                <span className="text-gray-400 text-xs sm:text-sm">
+                  Loading...
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Discord Link */}
