@@ -5,6 +5,7 @@ import "./index.css";
 import type { ApiResponse } from "./types/api";
 import StockCard from "./components/stock-card";
 import LoadingSpinner from "./components/loader";
+import Footer from "./components/footer";
 function App() {
   const { isPending, error, data, refetch } = useQuery<ApiResponse>({
     queryKey: ["stocks"],
@@ -20,6 +21,7 @@ function App() {
       <SiteHeader />
       <Timer refetch={refetch} />
       <StockCard data={data} />
+      <Footer />
     </div>
   );
 }
